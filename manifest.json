@@ -9,10 +9,17 @@
       "48": "images/icon-48.png",
       "128": "images/icon-128.png"
     },
+    "permissions": [
+      "storage"
+    ],
+    "action": {
+      "default_popup": "popup.html",
+      "default_icon": "images/icon-48.png"
+    },
     "content_scripts": [
       {
-        "js": ["scripts/content.js"],
-        "matches": ["https://gradescope.com/*"]
+        "js": ["scripts/content.js", "scripts/ui.js"],
+        "matches": ["https://www.gradescope.com/*"]
       }
     ]
   }
