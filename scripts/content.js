@@ -9,7 +9,13 @@ function displayEstimatedTime(remainingTime) {
       targetElement.parentNode.insertBefore(etaElement, targetElement.nextSibling);
     }
     var secs = Math.round(remainingTime);
-    etaElement.textContent = "Estimated " + Math.floor(secs / 60) + " minute(s) remaining to grade all submissions.";
+    if (remainingTime == Infinity) {
+      etaElement.textContent = "Estimating Grading Speed...";
+    } else if (secs <= 60) {
+      etaElement.textContent = "Estimated " + secs + " second(s) remaining to grade all submissions.";
+    } else {
+      etaElement.textContent = "Estimated " + Math.floor(secs / 60) + " minute(s) remaining to grade all submissions.";
+    }
   }
 }
 
@@ -35,7 +41,7 @@ function updateGradingProgress(graded, total) {
 
 // Function to calculate grading speed based on the stored data
 function calculateGradingSpeed(graded, total) {
-  if (gradingData.length >= 2) {
+  if (gradingData.length >= 3) {
     const latestEntry = gradingData[gradingData.length - 1];
     const oldestEntry = gradingData[0];
     const timeElapsed = (latestEntry.timestamp - oldestEntry.timestamp) / 1000; // Convert to seconds
@@ -48,9 +54,12 @@ function calculateGradingSpeed(graded, total) {
 
     // Display the estimated time remaining to the user
     displayEstimatedTime(remainingTime);
+  } else {
+    displayEstimatedTime(Infinity);
   }
 }
 
+displayEstimatedTime(Infinity);
 // Start the polling process
 setInterval(() => {
   var divElement = document.querySelector('.progressBar--caption.progressBar--caption-on-gray');
